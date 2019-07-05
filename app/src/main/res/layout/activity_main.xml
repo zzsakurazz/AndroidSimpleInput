@@ -10,9 +10,9 @@
         android:id="@+id/main_input_method_title_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
         android:text="极简输入法"
         android:textSize="30sp"
-        android:layout_marginTop="30dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -24,8 +24,8 @@
         android:layout_marginLeft="30dp"
         android:layout_marginTop="30dp"
         android:layout_marginRight="30dp"
-        android:elevation="2dp"
         android:background="@drawable/bg_main_layout_blue"
+        android:elevation="2dp"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -74,8 +74,8 @@
         android:layout_marginLeft="30dp"
         android:layout_marginTop="30dp"
         android:layout_marginRight="30dp"
-        android:elevation="2dp"
         android:background="@drawable/bg_main_layout_yellow"
+        android:elevation="2dp"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -116,4 +116,56 @@
             app:layout_constraintTop_toBottomOf="@+id/main_input_method_explain_title_tv" />
 
     </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/main_input_method_advise_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="30dp"
+        android:background="@drawable/bg_main_layout_pink"
+        android:elevation="2dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main_input_method_explain_layout">
+
+        <ImageView
+            android:id="@+id/main_icon_input_method_advise_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/icon_advise"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/main_input_method_advise_title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="意见和反馈"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/main_input_method_advise_hint_tv"
+            app:layout_constraintLeft_toRightOf="@+id/main_icon_input_method_advise_iv"
+            app:layout_constraintTop_toTopOf="@+id/main_icon_input_method_advise_iv" />
+
+        <TextView
+            android:id="@+id/main_input_method_advise_hint_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="欢迎通过GitHub反馈您宝贵的意见"
+            android:textColor="#ffffff"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="@+id/main_icon_input_method_advise_iv"
+            app:layout_constraintLeft_toLeftOf="@+id/main_input_method_advise_title_tv"
+            app:layout_constraintTop_toBottomOf="@+id/main_input_method_advise_title_tv" />
+
+    </android.support.constraint.ConstraintLayout>
+
+
 </android.support.constraint.ConstraintLayout>
