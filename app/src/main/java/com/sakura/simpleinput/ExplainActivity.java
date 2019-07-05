@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.sakura.simpleinput.Tools.StatusBarUtil;
+
 /**
  * @author zhangzheng
  * @Date 2019-07-04 17:38
@@ -28,5 +30,6 @@ public class ExplainActivity extends AppCompatActivity {
                 finish();
             }
         });
+        StatusBarUtil.setColor(this, this.getColor(R.color.colorPrimary));
     }
 }
