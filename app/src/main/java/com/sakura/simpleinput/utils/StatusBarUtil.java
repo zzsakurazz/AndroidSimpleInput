@@ -1,4 +1,4 @@
-package com.sakura.simpleinput.Tools;
+package com.sakura.simpleinput.utils;
 
 import android.app.Activity;
 import android.content.Context;
