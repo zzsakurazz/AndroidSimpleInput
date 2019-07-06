@@ -1,5 +1,6 @@
 package com.sakura.simpleinput;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -7,7 +8,10 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,13 +33,13 @@ public class MainActivity extends AppCompatActivity {
         mSettingLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                clickAnZHuangAction();
             }
         });
         mAdviseLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent= new Intent();
+                Intent intent = new Intent();
                 intent.setAction("android.intent.action.VIEW");
                 Uri content_url = Uri.parse("https://github.com/zzsakurazz/AndroidSimpleInput/issues");
                 intent.setData(content_url);
@@ -49,5 +53,30 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, ExplainActivity.class));
             }
         });
+    }
+    @SuppressLint("WrongConstant")
+    public void clickAnZHuangAction() {
+        if (isActivate()) {
+            ((InputMethodManager) getSystemService("input_method")).showInputMethodPicker();
+            return;
+        }
+        toInputMethodSetting();
+
+    }
+
+    private void toInputMethodSetting() {
+        Intent intent = new Intent("android.settings.INPUT_METHOD_SETTINGS");
+        Toast.makeText(this, "您尚未激活该软件，快去激活吧\n", Toast.LENGTH_SHORT).show();
+        MainActivity.this.startActivity(intent);
+    }
+
+    @SuppressLint("WrongConstant")
+    public boolean isActivate() {
+        for (InputMethodInfo inputMethodInfo : ((InputMethodManager) getSystemService("input_method")).getEnabledInputMethodList()) {
+            if (getPackageName().equals(inputMethodInfo.getPackageName())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

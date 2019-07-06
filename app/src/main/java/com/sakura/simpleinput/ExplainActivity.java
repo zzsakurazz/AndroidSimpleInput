@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.sakura.simpleinput.Tools.StatusBarUtil;
+import com.sakura.simpleinput.utils.StatusBarUtil;
 
 /**
  * @author zhangzheng
