@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/input_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="极简输入法"
+        android:textColor="#000"
+        android:textSize="18sp" />
+
+
+    <TextView
+        android:id="@+id/input_content_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:paddingBottom="15dp"
+        android:text="文字内容"
+        android:paddingRight="30dp"
+        android:paddingLeft="30dp"
+        android:textColor="#000"
+        android:textSize="15sp" />
+
+    <android.inputmethodservice.KeyboardView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/keyboard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:keyPreviewLayout="@null" />
+
+</LinearLayout>

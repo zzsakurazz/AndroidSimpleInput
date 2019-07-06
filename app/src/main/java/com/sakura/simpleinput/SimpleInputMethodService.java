@@ -1,7 +1,21 @@
 package com.sakura.simpleinput;
 
+import android.graphics.Typeface;
 import android.inputmethodservice.InputMethodService;
+import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
+import android.view.View;
+import android.view.inputmethod.InputConnection;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
+
+import com.sakura.simpleinput.utils.ClipboardUtil;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * @author zhangzheng
@@ -10,13 +24,107 @@ import android.inputmethodservice.KeyboardView;
  * <p>
  * Desc :
  */
-public class SimpleInputMethodService extends InputMethodService  implements KeyboardView.OnKeyboardActionListener {
+public class SimpleInputMethodService extends InputMethodService implements KeyboardView.OnKeyboardActionListener {
+    private String TAG = SimpleInputMethodService.class.getName();
+    /**
+     * 自定义的KeyboardView
+     */
+    private KeyboardView keyboardView;
+    /**
+     * 自定义的Keyboard
+     */
+    private Keyboard keyboard;
+    private View view;
+    private TextView mTitleTv;
+    private TextView mContentTv;
+    private Typeface typeFace;
+    private TimerTask task;
+    private Timer timer;
+    private int index;
+    private String results;
+    Handler mHandler = new Handler() {
 
 
+        public void handleMessage(Message param1Message) {
+            if (param1Message.what == 1) {
+                if (SimpleInputMethodService.this.index >= SimpleInputMethodService.this.results.length())
+                    return;
+                InputConnection inputConnection = SimpleInputMethodService.this.getCurrentInputConnection();
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.append(SimpleInputMethodService.this.results.charAt(SimpleInputMethodService.this.index));
+                stringBuilder.append("");
+                inputConnection.commitText(stringBuilder.toString(), 1);
+                index++;
+            }
+        }
+    };
 
 
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        Log.d(TAG, "onCreate()");
+    }
 
+    /**
+     * 键盘 第一次现实的时候调用
+     *
+     * @return
+     */
+    @Override
+    public View onCreateInputView() {
+        typeFace = Typeface.createFromAsset(getAssets(), "font.ttf");
+        view = getLayoutInflater().inflate(R.layout.layout_keyboard_view, null);
+        // keyboard被创建后，将调用onCreateInputView函数
+        keyboardView = view.findViewById(R.id.keyboard);
+        keyboard = new Keyboard(this, R.xml.qwerty);
+        keyboardView.setKeyboard(keyboard);
+        keyboardView.setOnKeyboardActionListener(this);
+        mTitleTv = view.findViewById(R.id.input_title_tv);
+        mTitleTv.setTypeface(typeFace);
+        mContentTv = view.findViewById(R.id.input_content_tv);
+        this.results = ClipboardUtil.getClipContent(this);
+        mContentTv.setText(results);
+        return view;
+    }
 
+    public void deleteText() {
+        destoryTime();
+        for (byte b = 0; b < this.index; b++) {
+            getCurrentInputConnection().deleteSurroundingText(1, 0);
+        }
+    }
+
+    public void destoryTime() {
+        if (this.task != null) {
+            this.task.cancel();
+            this.task = null;
+        }
+        if (this.timer != null) {
+            this.timer.cancel();
+            this.timer = null;
+        }
+    }
+
+    public void initTimeAndTask() {
+        this.timer = new Timer();
+        this.task = new TimerTask() {
+            public void run() {
+                SimpleInputMethodService.this.mHandler.sendEmptyMessage(1);
+            }
+        };
+    }
+
+    public void inputCommitText() {
+        this.index = 0;
+        startTask();
+    }
+
+    public void startTask() {
+        destoryTime();
+        initTimeAndTask();
+        this.timer.schedule(this.task, 0L, 50L);
+    }
 
 
     @Override
@@ -31,7 +139,12 @@ public class SimpleInputMethodService extends InputMethodService  implements Key
 
     @Override
     public void onKey(int primaryCode, int[] keyCodes) {
-
+        if (primaryCode == 102)
+            inputCommitText();
+        if (primaryCode == 101)
+            ((InputMethodManager) getSystemService("input_method")).showInputMethodPicker();
+        if (primaryCode == 100)
+            deleteText();
     }
 
     @Override

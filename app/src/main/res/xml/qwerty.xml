@@ -1,0 +1,22 @@
+<Keyboard xmlns:android="http://schemas.android.com/apk/res/android"
+    android:horizontalGap="3px"
+    android:keyHeight="60dp"
+    android:verticalGap="3dp">
+
+    <Row android:rowEdgeFlags="bottom">
+        <Key
+            android:codes="100"
+            android:keyWidth="30%p"
+            android:keyEdgeFlags="left"
+            android:keyLabel="清空内容" />
+        <Key
+            android:codes="101"
+            android:keyWidth="30%p"
+            android:keyLabel="切换键盘" />
+        <Key
+            android:codes="102"
+            android:keyWidth="40%p"
+            android:keyLabel="开始输入" />
+
+    </Row>
+</Keyboard>
