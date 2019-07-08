@@ -60,11 +60,20 @@ public class SimpleInputMethodService extends InputMethodService implements Keyb
     };
 
 
+    /**
+     * 当软键盘隐藏时停止输入
+     *
+     * @version
+     * @date 2019-07-08 16:43
+     * @author zhangzheng
+     */
     @Override
-    public void onCreate() {
-        super.onCreate();
-        Log.d(TAG, "onCreate()");
+    public void onWindowHidden() {
+        super.onWindowHidden();
+        Log.d(TAG, "onWindowHidden()");
+        destroyTime();
     }
+
 
     /**
      * 键盘 第一次现实的时候调用
@@ -73,29 +82,57 @@ public class SimpleInputMethodService extends InputMethodService implements Keyb
      */
     @Override
     public View onCreateInputView() {
-        typeFace = Typeface.createFromAsset(getAssets(), "font.ttf");
+
         view = getLayoutInflater().inflate(R.layout.layout_keyboard_view, null);
+        initKeyView(view);
+        initView(view);
+        return view;
+
+    }
+
+    /**
+     * 初始化软键盘相关view
+     *
+     * @param view
+     * @version
+     * @date 2019-07-08 16:46
+     * @author zhangzheng
+     */
+    private void initKeyView(View view) {
         // keyboard被创建后，将调用onCreateInputView函数
         keyboardView = view.findViewById(R.id.keyboard);
         keyboard = new Keyboard(this, R.xml.qwerty);
         keyboardView.setKeyboard(keyboard);
         keyboardView.setOnKeyboardActionListener(this);
+    }
+
+    /**
+     * 初始化标题、内容view
+     *
+     * @param view
+     * @version
+     * @date 2019-07-08 16:46
+     * @author zhangzheng
+     */
+    private void initView(View view) {
+
+        typeFace = Typeface.createFromAsset(getAssets(), "font.ttf");
         mTitleTv = view.findViewById(R.id.input_title_tv);
         mTitleTv.setTypeface(typeFace);
         mContentTv = view.findViewById(R.id.input_content_tv);
-        this.results = ClipboardUtil.getClipContent(this);
+        results = ClipboardUtil.getClipContent(this);
         mContentTv.setText(results);
-        return view;
+        mContentTv.setMovementMethod(ScrollingMovementMethod.getInstance());
     }
 
     public void deleteText() {
-        destoryTime();
+        destroyTime();
         for (byte b = 0; b < this.index; b++) {
             getCurrentInputConnection().deleteSurroundingText(1, 0);
         }
     }
 
-    public void destoryTime() {
+    public void destroyTime() {
         if (this.task != null) {
             this.task.cancel();
             this.task = null;
@@ -121,21 +158,11 @@ public class SimpleInputMethodService extends InputMethodService implements Keyb
     }
 
     public void startTask() {
-        destoryTime();
+        destroyTime();
         initTimeAndTask();
         this.timer.schedule(this.task, 0L, 50L);
     }
 
-
-    @Override
-    public void onPress(int primaryCode) {
-
-    }
-
-    @Override
-    public void onRelease(int primaryCode) {
-
-    }
 
     @Override
     public void onKey(int primaryCode, int[] keyCodes) {
@@ -150,6 +177,14 @@ public class SimpleInputMethodService extends InputMethodService implements Keyb
     @Override
     public void onText(CharSequence text) {
 
+    }
+
+    @Override
+    public void onPress(int primaryCode) {
+    }
+
+    @Override
+    public void onRelease(int primaryCode) {
     }
 
     @Override
