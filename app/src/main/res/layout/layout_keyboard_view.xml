@@ -2,8 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="#e0e0e0"
     android:gravity="center"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingBottom="18dp">
 
     <TextView
         android:id="@+id/input_title_tv"
@@ -11,27 +13,33 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="极简输入法"
-        android:textColor="#000"
-        android:textSize="18sp" />
+        android:textColor="#303030"
+        android:textSize="25sp" />
 
 
     <TextView
         android:id="@+id/input_content_tv"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
         android:layout_marginTop="10dp"
         android:gravity="center"
-        android:paddingBottom="15dp"
-        android:text="文字内容"
-        android:paddingRight="30dp"
+        android:hint="当前粘贴板没有任何内容哦~~"
         android:paddingLeft="30dp"
-        android:textColor="#000"
+        android:paddingRight="30dp"
+        android:paddingBottom="15dp"
+        android:scrollbars="vertical"
+        android:textColor="#303030"
         android:textSize="15sp" />
 
     <android.inputmethodservice.KeyboardView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/keyboard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:keyPreviewLayout="@null" />
+        android:background="#e0e0e0"
+        android:keyBackground="@drawable/bg_key"
+        android:keyPreviewLayout="@null"
+        android:keyTextColor="#303030"
+        android:keyTextSize="15sp"
+        android:shadowColor="#ffffff" />
 
 </LinearLayout>
