@@ -6,6 +6,7 @@ import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
 import android.os.Handler;
 import android.os.Message;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputConnection;
@@ -172,6 +173,11 @@ public class SimpleInputMethodService extends InputMethodService implements Keyb
             ((InputMethodManager) getSystemService("input_method")).showInputMethodPicker();
         if (primaryCode == 100)
             deleteText();
+        if (primaryCode == 103){
+            mContentTv.setText("");
+            ClipboardUtil.clearClip(this);
+        }
+
     }
 
     @Override

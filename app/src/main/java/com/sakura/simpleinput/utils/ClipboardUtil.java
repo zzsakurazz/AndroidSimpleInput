@@ -1,5 +1,6 @@
 package com.sakura.simpleinput.utils;
 
+import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.text.TextUtils;
@@ -33,4 +34,10 @@ public class ClipboardUtil {
         return "";
     }
 
+    public static void clearClip(Context context){
+        ClipboardManager manager = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+        if (manager!=null){
+            manager.setPrimaryClip(ClipData.newPlainText(null, ""));
+        }
+    }
 }
