@@ -77,6 +77,13 @@ public class SimpleInputMethodService extends InputMethodService implements Keyb
     }
 
 
+    @Override
+    public void onWindowShown() {
+        super.onWindowShown();
+        results = ClipboardUtil.getClipContent(this);
+        mContentTv.setText(results);
+    }
+
     /**
      * 键盘 第一次现实的时候调用
      *
@@ -84,12 +91,10 @@ public class SimpleInputMethodService extends InputMethodService implements Keyb
      */
     @Override
     public View onCreateInputView() {
-
         view = getLayoutInflater().inflate(R.layout.layout_keyboard_view, null);
         initKeyView(view);
         initView(view);
         return view;
-
     }
 
     /**
@@ -117,14 +122,14 @@ public class SimpleInputMethodService extends InputMethodService implements Keyb
      * @author zhangzheng
      */
     private void initView(View view) {
-
         typeFace = Typeface.createFromAsset(getAssets(), "font.ttf");
         mTitleTv = view.findViewById(R.id.input_title_tv);
         mTitleTv.setTypeface(typeFace);
         mContentTv = view.findViewById(R.id.input_content_tv);
+        mContentTv.setMovementMethod(ScrollingMovementMethod.getInstance());
         results = ClipboardUtil.getClipContent(this);
         mContentTv.setText(results);
-        mContentTv.setMovementMethod(ScrollingMovementMethod.getInstance());
+
     }
 
     public void deleteText() {
