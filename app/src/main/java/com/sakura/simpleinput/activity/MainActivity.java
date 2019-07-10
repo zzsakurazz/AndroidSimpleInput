@@ -1,4 +1,4 @@
-package com.sakura.simpleinput;
+package com.sakura.simpleinput.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -12,6 +12,8 @@ import android.view.inputmethod.InputMethodInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.sakura.simpleinput.R;
 
 public class MainActivity extends AppCompatActivity {
 

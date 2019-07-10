@@ -1,4 +1,4 @@
-package com.sakura.simpleinput;
+package com.sakura.simpleinput.service;
 
 import android.graphics.Typeface;
 import android.inputmethodservice.InputMethodService;
@@ -13,6 +13,7 @@ import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
+import com.sakura.simpleinput.R;
 import com.sakura.simpleinput.utils.ClipboardUtil;
 
 import java.util.Timer;

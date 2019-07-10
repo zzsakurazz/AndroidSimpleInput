@@ -10,9 +10,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/MyTheme"
+        android:name=".SimpleApplication"
         tools:ignore="GoogleAppIndexingWarning">
         <service
-            android:name=".SimpleInputMethodService"
+            android:name=".service.SimpleInputMethodService"
             android:permission="android.permission.BIND_INPUT_METHOD">
             <intent-filter>
                 <action android:name="android.view.InputMethod" />
@@ -23,7 +24,7 @@
         </service>
 
         <activity
-            android:name=".SplashActivity"
+            android:name=".activity.SplashActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,8 +33,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ExplainActivity" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".activity.ExplainActivity" />
+        <activity android:name=".activity.MainActivity" />
     </application>
 
 </manifest>
