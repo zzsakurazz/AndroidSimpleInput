@@ -1,4 +1,4 @@
-package com.sakura.simpleinput.activity;
+package com.sakura.simpleinput.ui.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;

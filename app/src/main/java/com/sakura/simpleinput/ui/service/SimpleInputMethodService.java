@@ -1,4 +1,4 @@
-package com.sakura.simpleinput.service;
+package com.sakura.simpleinput.ui.service;
 
 import android.graphics.Typeface;
 import android.inputmethodservice.InputMethodService;

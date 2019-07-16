@@ -1,4 +1,4 @@
-package com.sakura.simpleinput.activity;
+package com.sakura.simpleinput.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
