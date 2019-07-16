@@ -5,21 +5,21 @@
 
     <Row android:rowEdgeFlags="bottom">
         <Key
+            android:codes="102"
+            android:keyWidth="25%p"
+            android:keyLabel="开始输入" />
+        <Key
+            android:codes="101"
+            android:keyWidth="25%p"
+            android:keyLabel="切换键盘" />
+        <Key
             android:codes="103"
             android:keyWidth="25%p"
             android:keyLabel="清空粘贴板" />
         <Key
             android:codes="100"
             android:keyWidth="25%p"
-            android:keyLabel="清空内容" />
-        <Key
-            android:codes="101"
-            android:keyWidth="25%p"
-            android:keyLabel="切换键盘" />
-        <Key
-            android:codes="102"
-            android:keyWidth="25%p"
-            android:keyLabel="开始输入" />
-
+            android:isRepeatable="true"
+            android:keyIcon="@drawable/icon_del_key" />
     </Row>
 </Keyboard>

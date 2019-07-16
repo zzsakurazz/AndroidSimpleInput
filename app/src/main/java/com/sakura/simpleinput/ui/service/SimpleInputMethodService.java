@@ -40,10 +40,12 @@ public class SimpleInputMethodService extends InputMethodService implements Keyb
     private TextView mTitleTv;
     private TextView mContentTv;
     private Typeface typeFace;
-    private TimerTask task;
+    private TimerTask timerTask;
     private Timer timer;
     private int index;
     private String results;
+
+
     Handler mHandler = new Handler() {
 
 
@@ -77,6 +79,13 @@ public class SimpleInputMethodService extends InputMethodService implements Keyb
     }
 
 
+    /**
+     * 键盘显示时获取当前粘贴板内容
+     *
+     * @version
+     * @date 2019-07-16 11:00
+     * @author zhangzheng
+     */
     @Override
     public void onWindowShown() {
         super.onWindowShown();
@@ -85,7 +94,7 @@ public class SimpleInputMethodService extends InputMethodService implements Keyb
     }
 
     /**
-     * 键盘 第一次现实的时候调用
+     * 键盘首次创建时候调用
      *
      * @return
      */
@@ -132,17 +141,28 @@ public class SimpleInputMethodService extends InputMethodService implements Keyb
 
     }
 
+    /**
+     * 删除当前文字
+     *
+     * @version
+     * @date 2019-07-16 11:01
+     * @author zhangzheng
+     */
     public void deleteText() {
-        destroyTime();
-        for (byte b = 0; b < this.index; b++) {
-            getCurrentInputConnection().deleteSurroundingText(1, 0);
-        }
+        getCurrentInputConnection().deleteSurroundingText(1, 0);
     }
 
+    /**
+     * 销毁计时器
+     *
+     * @version
+     * @date 2019-07-16 11:03
+     * @author zhangzheng
+     */
     public void destroyTime() {
-        if (this.task != null) {
-            this.task.cancel();
-            this.task = null;
+        if (this.timerTask != null) {
+            this.timerTask.cancel();
+            this.timerTask = null;
         }
         if (this.timer != null) {
             this.timer.cancel();
@@ -150,9 +170,10 @@ public class SimpleInputMethodService extends InputMethodService implements Keyb
         }
     }
 
+
     public void initTimeAndTask() {
         this.timer = new Timer();
-        this.task = new TimerTask() {
+        this.timerTask = new TimerTask() {
             public void run() {
                 SimpleInputMethodService.this.mHandler.sendEmptyMessage(1);
             }
@@ -167,19 +188,25 @@ public class SimpleInputMethodService extends InputMethodService implements Keyb
     public void startTask() {
         destroyTime();
         initTimeAndTask();
-        this.timer.schedule(this.task, 0L, 50L);
+        this.timer.schedule(this.timerTask, 0L, 50L);
+        isInputing = true;
     }
 
 
     @Override
     public void onKey(int primaryCode, int[] keyCodes) {
         if (primaryCode == 102)
-            inputCommitText();
+            if (isInputing) {
+                destroyTime();
+            } else {
+                inputCommitText();
+            }
         if (primaryCode == 101)
             ((InputMethodManager) getSystemService("input_method")).showInputMethodPicker();
-        if (primaryCode == 100)
+        if (primaryCode == 100) {
             deleteText();
-        if (primaryCode == 103){
+        }
+        if (primaryCode == 103) {
             mContentTv.setText("");
             ClipboardUtil.clearClip(this);
         }
@@ -188,15 +215,17 @@ public class SimpleInputMethodService extends InputMethodService implements Keyb
 
     @Override
     public void onText(CharSequence text) {
-
+            Log.e(TAG,"onText:"+text);
     }
 
     @Override
     public void onPress(int primaryCode) {
+        Log.e(TAG,"onPress:"+primaryCode);
     }
 
     @Override
     public void onRelease(int primaryCode) {
+        Log.e(TAG,"onRelease:"+primaryCode);
     }
 
     @Override
