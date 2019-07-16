@@ -44,6 +44,7 @@ public class SimpleInputMethodService extends InputMethodService implements Keyb
     private Timer timer;
     private int index;
     private String results;
+    private boolean isInputing = false;
 
 
     Handler mHandler = new Handler() {
