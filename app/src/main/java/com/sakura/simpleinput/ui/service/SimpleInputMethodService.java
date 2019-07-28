@@ -1,11 +1,10 @@
 package com.sakura.simpleinput.ui.service;
 
+import android.annotation.SuppressLint;
 import android.graphics.Typeface;
 import android.inputmethodservice.InputMethodService;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
-import android.os.Handler;
-import android.os.Message;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
@@ -16,8 +15,13 @@ import android.widget.TextView;
 import com.sakura.simpleinput.R;
 import com.sakura.simpleinput.utils.ClipboardUtil;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Flowable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
+import io.reactivex.functions.Consumer;
 
 /**
  * @author zhangzheng
@@ -27,7 +31,7 @@ import java.util.TimerTask;
  * Desc :
  */
 public class SimpleInputMethodService extends InputMethodService implements KeyboardView.OnKeyboardActionListener {
-    private String TAG = SimpleInputMethodService.class.getName();
+    private String TAG = "zz";
     /**
      * 自定义的KeyboardView
      */
@@ -40,29 +44,11 @@ public class SimpleInputMethodService extends InputMethodService implements Keyb
     private TextView mTitleTv;
     private TextView mContentTv;
     private Typeface typeFace;
-    private TimerTask timerTask;
-    private Timer timer;
     private int index;
     private String results;
     private boolean isInputing = false;
-
-
-    Handler mHandler = new Handler() {
-
-
-        public void handleMessage(Message param1Message) {
-            if (param1Message.what == 1) {
-                if (SimpleInputMethodService.this.index >= SimpleInputMethodService.this.results.length())
-                    return;
-                InputConnection inputConnection = SimpleInputMethodService.this.getCurrentInputConnection();
-                StringBuilder stringBuilder = new StringBuilder();
-                stringBuilder.append(SimpleInputMethodService.this.results.charAt(SimpleInputMethodService.this.index));
-                stringBuilder.append("");
-                inputConnection.commitText(stringBuilder.toString(), 1);
-                index++;
-            }
-        }
-    };
+    private StringBuilder stringBuilder = new StringBuilder();
+    private Disposable mDisposable;
 
 
     /**
@@ -154,32 +140,17 @@ public class SimpleInputMethodService extends InputMethodService implements Keyb
     }
 
     /**
-     * 销毁计时器
+     * 停止计时器
      *
      * @version
      * @date 2019-07-16 11:03
      * @author zhangzheng
      */
     public void destroyTime() {
-        if (this.timerTask != null) {
-            this.timerTask.cancel();
-            this.timerTask = null;
-        }
-        if (this.timer != null) {
-            this.timer.cancel();
-            this.timer = null;
-        }
+        if (mDisposable != null)
+            mDisposable.dispose();
     }
 
-
-    public void initTimeAndTask() {
-        this.timer = new Timer();
-        this.timerTask = new TimerTask() {
-            public void run() {
-                SimpleInputMethodService.this.mHandler.sendEmptyMessage(1);
-            }
-        };
-    }
 
     public void inputCommitText() {
         this.index = 0;
@@ -187,46 +158,72 @@ public class SimpleInputMethodService extends InputMethodService implements Keyb
     }
 
     public void startTask() {
-        destroyTime();
-        initTimeAndTask();
-        this.timer.schedule(this.timerTask, 0L, 50L);
-        isInputing = true;
+        mDisposable = (Disposable) Flowable.interval(50, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext(new Consumer<Long>() {
+                    @Override
+                    public void accept(Long aLong) throws Exception {
+                        if (SimpleInputMethodService.this.index >= SimpleInputMethodService.this.results.length()) {
+                            mDisposable.dispose();
+                            return;
+                        }
+                        InputConnection inputConnection = SimpleInputMethodService.this.getCurrentInputConnection();
+                        stringBuilder.append(SimpleInputMethodService.this.results.charAt(SimpleInputMethodService.this.index));
+                        stringBuilder.append("");
+                        inputConnection.commitText(stringBuilder.toString(), 1);
+                        stringBuilder.delete(0, stringBuilder.length());
+                        index++;
+                    }
+                }).doOnComplete(new Action() {
+                    @Override
+                    public void run() throws Exception {
+
+                    }
+                }).subscribe();
+
     }
 
 
+    @SuppressLint("WrongConstant")
     @Override
     public void onKey(int primaryCode, int[] keyCodes) {
-        if (primaryCode == 102)
-            if (isInputing) {
-                destroyTime();
-            } else {
-                inputCommitText();
-            }
-        if (primaryCode == 101)
-            ((InputMethodManager) getSystemService("input_method")).showInputMethodPicker();
-        if (primaryCode == 100) {
-            deleteText();
-        }
-        if (primaryCode == 103) {
-            mContentTv.setText("");
-            ClipboardUtil.clearClip(this);
+        switch (primaryCode) {
+            case 102:
+                if (isInputing) {
+                    destroyTime();
+                } else {
+                    inputCommitText();
+                }
+                break;
+            case 101:
+                ((InputMethodManager) getSystemService("input_method")).showInputMethodPicker();
+                break;
+            case 100:
+                deleteText();
+                break;
+            case 103:
+                mContentTv.setText("");
+                ClipboardUtil.clearClip(this);
+                break;
+            default:
+                break;
         }
 
     }
 
     @Override
     public void onText(CharSequence text) {
-            Log.e(TAG,"onText:"+text);
+        Log.e(TAG, "onText:" + text);
     }
 
     @Override
     public void onPress(int primaryCode) {
-        Log.e(TAG,"onPress:"+primaryCode);
+        Log.e(TAG, "onPress:" + primaryCode);
     }
 
     @Override
     public void onRelease(int primaryCode) {
-        Log.e(TAG,"onRelease:"+primaryCode);
+        Log.e(TAG, "onRelease:" + primaryCode);
     }
 
     @Override
