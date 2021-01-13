@@ -29,6 +29,7 @@ import io.reactivex.functions.Consumer;
  * @ClassName SimpleInputMethodService
  * <p>
  * Desc :git test 1
+ * git  test 2
  */
 public class SimpleInputMethodService extends InputMethodService implements KeyboardView.OnKeyboardActionListener {
     private String TAG = "zz";
