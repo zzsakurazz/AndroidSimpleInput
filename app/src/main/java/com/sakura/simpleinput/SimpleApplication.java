@@ -10,6 +10,7 @@ import com.tencent.bugly.crashreport.CrashReport;
  * @ClassName SimpleApplication
  * <p>
  * Desc : 这里添加了一个文案，这里再添加一个文案 我还是想修改一下嘻嘻
+ * 我接着嘻嘻
  */
 public class SimpleApplication extends Application {
 
