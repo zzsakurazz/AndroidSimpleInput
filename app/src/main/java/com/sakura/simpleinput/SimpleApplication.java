@@ -9,7 +9,7 @@ import com.tencent.bugly.crashreport.CrashReport;
  * @Date 2019-07-10 10:28
  * @ClassName SimpleApplication
  * <p>
- * Desc :
+ * Desc : 这里添加了一个文案
  */
 public class SimpleApplication extends Application {
 
