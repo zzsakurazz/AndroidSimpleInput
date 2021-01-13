@@ -11,8 +11,7 @@ import android.text.TextUtils;
  * @ClassName ClipboardUtil
  * <p>
  * Desc :我在这里偷偷改一下
- * test1111
- * git test222/
+/
 public class ClipboardUtil {
 
     /**
