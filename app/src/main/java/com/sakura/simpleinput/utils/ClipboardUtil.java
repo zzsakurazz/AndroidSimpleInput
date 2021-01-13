@@ -10,7 +10,8 @@ import android.text.TextUtils;
  * @Date 2019-07-05 18:00
  * @ClassName ClipboardUtil
  * <p>
- * Desc :我在这里偷偷改一下 */
+ * Desc :我在这里偷偷改一下
+ * 我还在修改一下，嘻嘻 */
 public class ClipboardUtil {
 
     /**
