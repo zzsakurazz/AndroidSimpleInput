@@ -11,6 +11,7 @@ import com.tencent.bugly.crashreport.CrashReport;
  * <p>
  * Desc : 这里添加了一个文案，这里再添加一个文案 我还是想修改一下嘻嘻
  * 我接着嘻嘻
+ * 我还是嘻嘻，怎样？
  */
 public class SimpleApplication extends Application {
 
