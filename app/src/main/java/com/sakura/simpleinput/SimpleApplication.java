@@ -10,6 +10,7 @@ import com.tencent.bugly.crashreport.CrashReport;
  * @ClassName SimpleApplication
  * <p>
  * Desc : git test1
+ *        git test2
  */
 public class SimpleApplication extends Application {
 
