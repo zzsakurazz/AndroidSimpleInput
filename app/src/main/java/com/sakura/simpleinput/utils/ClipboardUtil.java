@@ -12,8 +12,7 @@ import android.text.TextUtils;
  * <p>
  * Desc :我在这里偷偷改一下
  * test1111
- * git test222
- * 我还在修改一下，嘻嘻 */
+ * git test222/
 public class ClipboardUtil {
 
     /**
